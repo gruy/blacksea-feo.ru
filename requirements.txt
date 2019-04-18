@@ -1,0 +1,10 @@
+django>=1.9.8
+django-admin-sortable
+django-ckeditor
+django-contrib-comments
+django-filer
+django-mptt
+django-tinymce
+easy-thumbnails
+pytz
+-e git+git://github.com/smacker/django-filebrowser-no-grappelli.git#egg=django-filebrowser

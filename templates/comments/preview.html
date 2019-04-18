@@ -1,0 +1,37 @@
+{% load comments i18n %}
+
+
+<form action="{% comment_form_target %}#comments" method="post" role="form" id="comm_form">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+      <h1>{% blocktrans count counter=form.errors|length %}Please correct the error below{% plural %}Please correct the errors below{% endblocktrans %}</h1>
+    {% endif %}
+
+  {% for field in form %}
+    {% if field.is_hidden %}
+      {{ field }}
+    {% else %}
+        <div class="form-group">
+          <div
+            {% if field.errors %} class="error"{% endif %}
+            {% ifequal field.name "honeypot" %} style="display: none;"{% endifequal %}
+            {% ifequal field.name "url" %} style="display: none;"{% endifequal %}>
+            {% if field.errors %}{{ field.errors }}{% endif %}
+            {{ field.label_tag }}<br />{{ field }}
+          </div>
+        </div>
+    {% endif %}
+  {% endfor %}
+
+    {{ form.non_field_errors }}
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <div class="g-recaptcha" data-sitekey="6LevOiYUAAAAAGcRc3pbmDhGbew50WZcQPpRrrTt"></div>
+
+  <p>
+    <input type="submit" name="post" class="btn btn-primary" value="Отправить" id="subm" />
+{#    <input type="submit" name="preview" class="btn btn-info" value="Предпросмотр" />#}
+  </p>
+  <input type="hidden" name="next" value="/otzyvy/" />
+</form>

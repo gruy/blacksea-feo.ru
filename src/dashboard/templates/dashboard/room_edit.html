@@ -1,0 +1,74 @@
+{% extends 'dashboard/room_base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block room_content %}
+
+    <div class="row">
+        {% if form.errors %}
+            <div class="col-md-12">
+                <div class="alert alert-danger">Исправьте ошибки, показанные ниже.</div>
+            </div>
+        {% endif %}
+        
+        <form action="" method="post" class="c-shop-form-1 form-horizontal">
+            {% csrf_token %}
+
+            <div class="col-md-12 c-margin-b-30 w-100">
+                {{ form.title.label_tag }}<br />{{ form.title }}
+            </div>
+
+            <div class="col-md-12 c-margin-b-30">
+                {{ form.is_visible }} <label for="id_is_visible">— показывать на сайте</label>
+            </div>
+
+            <div class="col-md-4 w-100">
+                {{ form.rooms.label_tag }}<br />{{ form.rooms }}
+            </div>
+
+            <div class="col-md-4 c-margin-b-30 w-100">
+                {{ form.quantity.label_tag }}<br />{{ form.quantity }}
+            </div>
+
+            <div class="col-md-4 c-margin-b-30 w-100">
+                {{ form.numbers.label_tag }}<br />{{ form.numbers }}
+            </div>
+
+            <div class="col-md-4 w-100">
+                {{ form.persons.label_tag }}<br />{{ form.persons }}
+            </div>
+
+            <div class="col-md-4 w-100">
+                {{ form.places.label_tag }}<br />{{ form.places }}
+            </div>
+
+            <div class="col-md-4 c-margin-b-30 w-100">
+                {{ form.places_additional.label_tag }}<br />{{ form.places_additional }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form.comforts.label_tag }}<br />{{ form.comforts }}
+                {% if form.comforts.errors %}
+                    <div class="alert alert-danger">{{ form.comforts.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-12">
+                {{ form.text.label_tag }}<br />{{ form.text }}
+                {% if form.text.errors %}
+                    <div class="alert alert-danger">{{ form.text.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4 col-md-offset-4 c-margin-t-40">
+                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-save"></i>Сохранить</button>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
+
+

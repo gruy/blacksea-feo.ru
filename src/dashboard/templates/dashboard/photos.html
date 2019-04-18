@@ -1,0 +1,84 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block content %}
+    <div class="row c-margin-b-40">
+        <div class="col-md-12">
+            <form method="post" action="{% url 'dashboard:photos' %}" enctype="multipart/form-data" id="form">
+                {% csrf_token %}
+                <span class="btn btn-success fileinput-button">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Добавить фотографии
+                    <input type="file" name="files[]" multiple="" id="files">
+                </span>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row c-margin-b-40">
+    <ul class="photos-sortable">
+    {% for photo in photos %}
+        <li class="col-md-3 c-margin-b-30 photo-item" id="photo_{{ photo.id }}">
+            <div class="photo-label">
+                <a data-link="{% url 'dashboard:photo-delete' pk=photo.id %}" data-toggle="modal" data-target="#photo-delete" class="btn btn-xs btn-danger photo-delete">Удалить</a>
+            </div>
+            <img src="{{ photo.image|thumbnail_url:'dashboard_photos' }}" class="img-responsive" alt="" />
+        </li>
+    {% endfor %}
+    </ul>
+    </div>
+    
+    <div class="modal fade" id="photo-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Удалить фотографию?</h4>
+          </div>
+          
+          <div class="modal-body">
+              <div id="photo-delete-body">
+              </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#files').on('change', function(e) {
+                $('#form').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        window.location.reload();
+                    },
+                    dataType: 'json'
+                });
+                e.preventDefault();
+            });
+
+            $('#photo-delete').on('show.bs.modal', function (event) {
+                $.get(event.relatedTarget['dataset']['link'], function(data) {
+                    $('#photo-delete-body').html(data);
+                });
+            });
+            
+            $('.photos-sortable').sortable({
+                update: function(e, ui) {
+                    var d = $(this).sortable("serialize");
+                    console.log(d); 
+	                $.get(
+	                    '{% url 'dashboard:photos-sort' %}',
+	                    d,
+	                    function(data) {  }
+	                );
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

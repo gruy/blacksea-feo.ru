@@ -1,0 +1,103 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-7">
+            <h1>Слайдер</h1>
+            <p>Фотографии для слайдера на главной странице. Для сортировки достаточно перетащить фотографию на нужное место.</p>
+        </div>
+        <div class="col-md-5">
+            <form method="post" action="{% url 'dashboard:index-page' %}" enctype="multipart/form-data" id="slider-form" class="pull-right c-margin-t-30">
+                {% csrf_token %}
+                <span class="btn btn-success fileinput-button">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Добавить фотографии
+                    <input type="file" name="files[]" multiple="" id="files">
+                </span>
+            </form>
+        </div>
+    </div>
+
+    <div class="row c-margin-b-40">
+        <ul class="photos-sortable">
+        {% for slider in sliders %}
+            <li class="col-md-3 c-margin-b-30 photo-item" id="photo_{{ slider.id }}">
+                <div class="photo-label">
+                    <a data-link="{% url 'dashboard:slider-delete' slider.id %}" data-toggle="modal" data-target="#photo-delete" class="btn btn-xs btn-danger photo-delete">Удалить</a>
+                </div>
+                <img src="{{ slider.image|thumbnail_url:'dashboard_sliders' }}" class="img-responsive" alt="" />
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Текст на главной странице</h1>
+            <p>Это текст, который будет размещен на главной странице сайта сразу после слайдера.</p>
+            <form method="post" action="{% url 'dashboard:index-page' %}" id="text-form">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.text }}
+                <button type="submit" id="page-form" class="btn btn-success">Сохранить текст</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="photo-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Удалить фотографию?</h4>
+          </div>
+          
+          <div class="modal-body">
+              <div id="photo-delete-body">
+              </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#files').on('change', function(e) {
+                $('#slider-form').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        window.location.reload();
+                    },
+                    dataType: 'json'
+                });
+                e.preventDefault();
+            });
+
+            $('#photo-delete').on('show.bs.modal', function (event) {
+                $.get(event.relatedTarget['dataset']['link'], function(data) {
+                    $('#photo-delete-body').html(data);
+                });
+            });
+            
+            $('.photos-sortable').sortable({
+                update: function(e, ui) {
+                    var d = $(this).sortable("serialize");
+                    console.log(d); 
+                    $.get(
+                        '{% url 'dashboard:sliders-sort' %}',
+                        d,
+                        function(data) {  }
+                    );
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

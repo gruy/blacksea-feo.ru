@@ -1,0 +1,9 @@
+<form method="post" action="/order/" id="order">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group col-md-4">
+            {{ field.label_tag }} {{ field }}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+</form>

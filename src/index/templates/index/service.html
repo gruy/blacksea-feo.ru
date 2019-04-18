@@ -1,0 +1,57 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">{{ service.title }}</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                <p class="c-center">{{ service.mini_text }}</p>
+            </div>
+        </div>
+    </div>
+
+{#    <div class="row">#}
+{#        <div class="col-md-12">#}
+{#            <img src="{{ service.image|thumbnail_url:'service' }}" alt="" class="img-responsive" />#}
+{#        </div>#}
+{#    </div>#}
+
+    <div class="row c-margin-t-20">
+        <div class="col-md-5">
+            <div class="row">
+            {% for photo in service.get_photos %}
+                <div class="col-md-6 c-margin-b-20">
+                    <a href="{{ photo.image|thumbnail_url:'service_view' }}" data-lightbox="fancybox" rel="group"><img src="{{ photo.image|thumbnail_url:'service_thumb' }}" alt="" class="img-responsive" /></a>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-7">
+            {{ service.text|safe }}
+        </div>
+    </div>
+
+    <div class="row c-margin-t-50">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h2 class="c-center c-font-uppercase">Другие услуги</h2>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+{#                <p class="c-center c-font-uppercase">Что мы можем дополнительно предложить для всех наших гостей</p>#}
+            </div>
+        </div>
+        {% for service in services %}
+            <div class="col-md-6 c-margin-b-30 service-label">
+                <h2 class="c-font c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}<small>{{ service.mini_text }}</small></a></h2>
+                <figure><img src="{{ service.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></figure>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

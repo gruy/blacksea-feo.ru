@@ -1,0 +1,13 @@
+<form method="post" action="{% url 'dashboard:room-price-edit' pk=price.id %}" id="order">
+    <div class="row">
+        {% csrf_token %}
+        <div class="form-group col-md-12">
+            {{ form }}
+        </div>
+        
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary" id="price-save">Сохранить</button>
+            <button type="button" class="btn c-btn-red c-btn-border-2x" data-dismiss="modal">Отменить</button>
+        </div>
+    </div>
+</form>

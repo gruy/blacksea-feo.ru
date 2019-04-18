@@ -1,0 +1,27 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h3 class="c-center c-font-uppercase">Номера гостевого дома «Черное море»</h3>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+{#                <p class="c-center c-font-uppercase">Cras sit amet nibh libero, in gravida nulla</p>#}
+            </div>
+        </div>
+        {% for room in rooms %}
+            <div class="col-md-6 c-margin-b-30 {% cycle 'c-padding-r-30' 'c-padding-l-30' %}">
+                <h2 class="c-font-24"><a href="{% url 'room' room.id %}">{{ room.title }}</a>
+                <small>Количество человек: {{ room.persons }}</small></h2>
+                <a href="{% url 'room' room.id %}"><img src="{{ room.get_cover.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></a>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

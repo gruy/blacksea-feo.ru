@@ -1,0 +1,5 @@
+<form action="{% url 'dashboard:slider-delete' pk=slider.id %}" method="post">
+    {% csrf_token %}
+    <input class="btn btn-danger" type="submit" value="Удалить" />
+    <button type="button" class="btn c-btn-red c-btn-border-2x" data-dismiss="modal">Отменить</button>
+</form>

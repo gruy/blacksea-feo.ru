@@ -1,0 +1,90 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    {% for slider in sliders %}
+                        <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}"{% if forloop.first %} class="active"{% endif %}></li>
+                    {% endfor %}
+                  </ol>
+                
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" role="listbox">
+                    {% for slider in sliders %}
+                        <div class="item{% if forloop.first %} active{% endif %}">
+                            <img alt="" src="{{ slider.image|thumbnail_url:'index_sliders' }}" class="img-responsive">
+                        </div>
+                    {% endfor %}
+                  </div>
+
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Предыдущий</span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Следующий</span>
+                  </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 c-margin-t-40">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">Гостевой дом «Черное море»</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+{#                <p class="c-center">Фотографии номеров и территории гостевого дома «Черное море»</p>#}
+            </div>
+            {{ page.text|safe }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 c-margin-t-40">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">Дополнительные услуги</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                <p class="c-center">Что мы можем дополнительно предложить для всех наших гостей</p>
+            </div>
+            {% for service in services %}
+                <div class="col-md-6 c-margin-b-30 service-label">
+                    <figure>
+                        <h2 class="c-font c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}<small>{{ service.mini_text }}</small></a></h2><img src="{{ service.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" />
+                    </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 c-margin-t-40">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">Мы предлагаем вам комфортабельные номера</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+            </div>
+            {% for room in rooms %}
+                <div class="col-md-4 c-margin-b-30 room-label">
+                <figure>
+                    <h2 class="c-font c-font-uppercase"><a href="{% url 'room' room.id %}">{{ room.title }}</a></h2>
+                    <a href="{% url 'room' room.id %}"><figure><img src="{{ room.get_cover.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></figure></a>
+                </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

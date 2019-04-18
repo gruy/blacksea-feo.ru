@@ -1,0 +1,49 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">Гостевой дом «Черное море» — контактная информация</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+            {{ contacts.contacts_text|safe }}
+        </div>
+
+        <div class="col-md-4 c-margin-t-40">
+            <h2>Адрес</h2>
+            <p>{{ contacts.address }}</p>
+            <h2>Телефоны</h2>
+            <p>
+                {% if contacts.phone_1 %}
+                    {{ contacts.phone_1 }}<br />
+                {% endif %}
+                {% if contacts.phone_2 %}
+                    {{ contacts.phone_2 }}<br />
+                {% endif %}
+                {% if contacts.phone_3 %}
+                    {{ contacts.phone_3 }}<br />
+                {% endif %}
+            </p>
+            <h2>Email</h2>
+            <p>{{ contacts.email }}</p>
+            <h2>Skype</h2>
+            <p>{{ contacts.skype }}</p>
+        </div>
+        
+        <div class="col-md-8 c-margin-t-40" style="overflow: hidden;">
+            {{ contacts.map|safe }}
+        </div>
+
+    </div>
+
+{% endblock %}

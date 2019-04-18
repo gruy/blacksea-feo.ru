@@ -1,0 +1,106 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">{{ room.title }}</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row c-margin-t-30">
+        <div class="col-md-7">
+            <p class="c-font-20">{{ room.text }}</p>
+        </div>
+        
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <tr>
+                            <td><h3>Количество человек:</h3></td>
+                            <td><h3><b>{{ room.persons }}</b></h3></td>
+                        </tr>
+                        <tr>
+                            <td><h3>Основных мест:</h3></td>
+                            <td><h3><b>{{ room.places }}</b></h3></td>
+                        </tr>
+                        <tr>
+                            <td><h3>Дополнительных мест:</h3></td>
+                            <td><h3><b>{{ room.places_additional }}</b></h3></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="col-md-12">
+{#                    <h3>Удобства в номере</h3>#}
+                    <ul>
+                    {% for comfort in room.get_comforts %}
+                        <li class="col-md-6">{{ comfort.title }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 c-margin-t-30">
+            <div class="c-content-title-1 c-title-md">
+                <h3 class="c-center c-font-uppercase c-font-bold">Стоимость проживания</h3>
+{#                <div class="c-line-center c-bg-red-1"></div>#}
+{#                <p class="c-center c-font-lowercase">Cras sit amet nibh libero, in gravida nulla</p>#}
+            </div>
+            <table class="table">
+                <tr>
+                {% for price in room.get_prices %}
+                    <th class="text-center">{{ price.date_start|date:'d.m.Y' }} - {{ price.date_end|date:'d.m.Y' }}</th>
+                {% endfor %}
+                </tr>
+                <tr>
+                {% for price in room.get_prices %}
+                    <td class="text-center">
+                        {% if price.price_min %}{{ price.price_min }}{% endif %}
+                        {% if price.price_max and price.price_min %} - {% endif %}
+                        {% if price.price_max %}{{ price.price_max }}{% endif %}
+                        руб.
+                    </td>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+        
+    <div class="row c-margin-t-30">
+{#        <h2 class="c-center c-font-uppercase c-font-blue-2">Фотографии номера</h2>#}
+        {% for photo in room.get_photos %}
+            <div class="col-md-4 c-center c-margin-b-40">
+                <img src="{{ photo.image|thumbnail_url:'room_photo' }}" alt="" class="img-responsive" /> 
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row c-margin-t-30">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h3 class="c-center c-font-uppercase">Дополнительные услуги</h3>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                <p class="c-center c-font-uppercase">Что мы можем дополнительно предложить для всех наших гостей</p>
+            </div>
+        </div>
+        {% for service in services %}
+            <div class="col-md-6 c-margin-b-30 service-label">
+                <h2 class="c-font c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}<small>{{ service.mini_text }}</small></a></h2>
+                <figure><img src="{{ service.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></figure>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

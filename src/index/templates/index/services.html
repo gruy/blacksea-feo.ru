@@ -1,0 +1,62 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h3 class="c-center c-font-uppercase">Дополнительные услуги</h3>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                <p class="c-center c-font-uppercase">Что мы можем дополнительно предложить для всех наших гостей</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="services">
+        <div class="row">
+        {% for service in services %}
+            <div class="col-md-12 c-margin-b-50">
+                <div class="post">
+                    <div class="post-media">
+                        <a href="{% url 'service' service.id %}"><img src="{{ service.image|thumbnail_url:'service_list' }}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="post-body">
+                        <div class="c-content-title-2">
+                            <h2 class="c-center c-font-uppercase"><a href="{% url 'service' service.id %}">{{ service.title }}</a></h2>
+                            <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                        </div>
+                        
+{#                        <h2 class="c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}</a></h2>#}
+                        <p>{{ service.mini_text }}</p>
+                        <p class="c-margin-t-20"><a href="{% url 'service' service.id %}" class="btn btn-default c-btn-uppercase c-btn-square c-btn-uppercase c-btn-bold c-btn-border-1x c-btn-blue-2">Узнать больше</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}
+<div class="post ef-width">
+    <div class="post-media">
+        <img src="/media/rooms/9/thumbs/9f58f1364306c306739fa8b26cd7360c.JPG.870x550_q85_crop.jpg" alt="">
+        <a href="/rooms/9/" class="overlay"><span class="fa fa-search"></span></a>
+    </div>
+    <div class="post-body">
+        <h2><a href="/rooms/9/">2-х местный стандарт</a></h2>
+        <div class="post-content">
+            <p style="display: block; max-height: 84px; overflow: hidden;" data-number-line="3">Уютные номера для двух человек с большой двухспальной кроватью или двумя односпальными. В номерах есть все для полноценного и комфортного отдыха в Феодосии. Недалеко от гостевого дома песчаный пляж &amp;quot;Черноморская набережная&amp;quot; (всего 10 минут прогулочным шагом). Уютный зеленый дворик, детская площадка, летняя кухня, водоем с рыбками - это все поможет вам полностью расслабиться, забыть обо всем, кроме отдыха и восстановления здоровья и сил в течение вашего отпуска в Феодосии.</p>
+        </div>
+        <div class="post-footer">
+            <p class="price">
+                <span class="small">от</span> 1000 <span class="small">руб.</span>
+            </p>
+            
+        </div>
+    </div>
+</div>

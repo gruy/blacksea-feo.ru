@@ -1,0 +1,19 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block content %}
+    <div class="row c-margin-b-40">
+        <div class="col-md-12">
+            <h1>Добавить услугу</h1>
+            <form method="post" action="{% url 'dashboard:service-add' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <p><button type="submit" class="btn btn-success">Добавить</button></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

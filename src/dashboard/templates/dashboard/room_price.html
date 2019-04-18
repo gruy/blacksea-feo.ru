@@ -1,0 +1,153 @@
+{% extends 'dashboard/room_base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block room_content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <a href="" class="price-btn btn btn-success" data-toggle="modal" data-target="#price"><i class="fa fa-plus" aria-hidden="true"></i> Добавить цену</a>
+        </div>
+    </div>
+
+    <div class="row c-margin-t-20">
+        <div class="col-md-12">
+            <table class="table">
+                <tr>
+                    <th>Название</th>
+                    <th>Начало</th>
+                    <th>Конец</th>
+                    <th>Цена от</th>
+                    <th>Цена до</th>
+                    <th>&nbsp;</th>
+                </tr>
+                {% for price in room.get_prices %}
+                    <tr>
+                        <td>{{ price.title }}</td>
+                        <td>{{ price.date_start }}</td>
+                        <td>{{ price.date_end }}</td>
+                        <td>{{ price.price_min }}</td>
+                        <td>{{ price.price_max }}</td>
+                        <td>
+                            <a href="#" data-link="{% url 'dashboard:room-price-edit' pk=price.id %}" class="price-edit" data-toggle="modal" data-target="#price-edit">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            &nbsp;
+                            <a href="#" data-link="{% url 'dashboard:room-price-delete' pk=price.id %}" class="price-delete" data-toggle="modal" data-target="#price-delete">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="price" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-target=".bs-example-modal-sm">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Цены</h4>
+          </div>
+          
+          <div class="modal-body">
+            <form method="post" action="{% url 'dashboard:room-price-add' pk=room.id %}" id="order">
+                <div class="row" id="modal-price">
+                </div>
+                <button type="submit" class="btn btn-primary" id="price-save">Сохранить</button>
+                <button type="button" class="btn c-btn-red c-btn-border-2x" data-dismiss="modal">Отменить</button>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="price-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Изменение цены</h4>
+          </div>
+          
+          <div class="modal-body">
+            <div id="modal-price-edit"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="price-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-target=".bs-example-modal-sm">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Удалить цену?</h4>
+          </div>
+          
+          <div class="modal-body">
+              <div id="price-delete-body">
+              </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".price-btn").on("click", function() {
+            });
+
+            $('#price').on('show.bs.modal', function (event) {
+                $.get('{% url 'dashboard:room-price-add' pk=room.id %}', function(data) {
+                    $('#modal-price').html(data['html']);
+                    $('#id_date_start').datepicker({dateFormat: "dd.mm.yy"});
+                    $('#id_date_end').datepicker({dateFormat: "dd.mm.yy"});
+                });
+            });
+
+            $('#price-edit').on('show.bs.modal', function (event) {
+                $.get(event.relatedTarget['dataset']['link'], function(data) {
+                    $('#modal-price-edit').html(data['html']);
+                    $('#id_date_start').datepicker({dateFormat: "dd.mm.yy"});
+                    $('#id_date_end').datepicker({dateFormat: "dd.mm.yy"});
+                });
+            });
+            
+            $('#price-delete').on('show.bs.modal', function (event) {
+                $.get(event.relatedTarget['dataset']['link'], function(data) {
+                    $('#price-delete-body').html(data);
+                });
+            });
+
+            $('#price-save').on('click', function() {
+                console.log("Click");
+                $('#order').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        if (data['result'] == 'success') {
+                            window.location.reload();
+                        }
+                        else if (data['result'] == 'error') {
+                            $('#modal-price').html(data['html']);
+                        }
+                    },
+                    dataType: 'json'
+                });
+                return false;
+            });
+
+        });
+    </script>
+
+{% endblock %}
+
+

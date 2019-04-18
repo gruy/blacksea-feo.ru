@@ -1,0 +1,52 @@
+{% extends 'index/base.html' %}
+
+
+{% load comments %}
+{% load staticfiles %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-7">
+
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase">Отзывы</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+            </div>
+
+            {% get_comment_list for sites.site 1 as comments %}
+            {% for comment in comments reversed %}
+                <h4>{{ comment.user_name}} <small>({{ comment.submit_date|date:"d M Y" }})</small></h4>
+                <blockquote>
+                    <p>{{comment.comment|linebreaks}}</p>
+                </blockquote>
+            {% endfor %}
+        </div>
+        <div class="col-md-5">
+            <h4>Добавить отзыв</h4>
+            <p>&nbsp;</p>
+            {% get_comment_form for sites.site 1 as form %}
+            <div id="comm">
+                {% include 'index/comment_form.html' %}
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#comm #subm').on('click', function() {
+                $('#comm_form').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        if (data.length > 3500)
+                            window.location.reload();
+                        else
+                            $('#comm').html(data);
+                    },
+                });
+                return false;
+            });
+
+        });
+    </script>
+
+{% endblock %}

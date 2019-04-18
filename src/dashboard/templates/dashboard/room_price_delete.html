@@ -1,0 +1,5 @@
+<form action="{% url 'dashboard:room-price-delete' pk=price.id %}" method="post">{% csrf_token %}
+    <p class="alert alert-danger">Удалить цену "<b>{{ price.date_start }} - {{ price.date_end }}</b>"?</p>
+    <input class="btn btn-danger" type="submit" value="Удалить" />
+    <button type="button" class="btn c-btn-red c-btn-border-2x" data-dismiss="modal">Отменить</button>
+</form>

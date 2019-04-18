@@ -1,0 +1,34 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block content %}
+    <div class="row c-margin-b-20">
+        <div class="c-content-title-2">
+            <h1 class="c-left c-font-lowercase c-font-sbold">{{ room.title }}</h1>
+            <div class="c-line c-theme-bg c-theme-bg-after"></div>
+        </div>
+        <ul class="nav nav-tabs c-font-slim">
+            <li{% if active_menu == 'room_edit' %} class="active"{% endif %}>
+                <a href="{% url 'dashboard:room-edit' pk=room.id %}" class="c-font-blue-2">Описание номера</a>
+            </li>
+            <li{% if active_menu == 'room_photo' %} class="active"{% endif %}>
+                <a href="{% url 'dashboard:room-photo' pk=room.id %}" class="c-font-blue-2">Фотографии</a>
+            </li>
+            <li{% if active_menu == 'room_price' %} class="active"{% endif %}>
+                <a href="{% url 'dashboard:room-price' pk=room.id %}" class="c-font-blue-2">Цены</a>
+            </li>
+            <li>
+                <a href="{% url 'room' pk=room.id %}" class="c-font-blue-2" target="_blank">Смотреть номер на сайте</a>
+            </li>
+        </ul>
+    </div>
+
+    {% block room_content %}{% endblock %}
+
+    
+{% endblock %}
+
+

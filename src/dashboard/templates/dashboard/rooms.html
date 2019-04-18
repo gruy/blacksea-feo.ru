@@ -1,0 +1,84 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block content %}
+    <div class="row c-margin-b-40">
+        <div class="col-md-12">
+            <a href="#" class="price-btn btn btn-success" data-toggle="modal" data-target="#room-add"><i class="fa fa-plus" aria-hidden="true"></i> Добавить номер</a>
+        </div>
+    </div>
+    {% for room in rooms %}
+        <div class="row c-margin-b-40">
+            <div class="c-content-product-2 c-bg-white">
+                <div class="col-md-6">
+                    {% if room.get_cover.image %}
+                        <img src="{{ room.get_cover.image|thumbnail_url:'dashboard_rooms_list' }}" alt="" class="img-responsive" />
+                    {% else %}
+                        <img src="/static/no-photo.png" class="img-responsive" />
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="c-info-list">
+                        <h2><a href="{% url 'dashboard:room-edit' pk=room.id %}">{{ room.title }}</a></h3>
+                        <p>Количество человек: {{ room.persons }}</p>
+                        <p>Основных мест: {{ room.places }}</p>
+                        <p>Дополнительных мест: {{ room.places_additional }}</p>
+                        <p class="{% if room.is_visible %}c-font-blue-2">Показывается на сайте{% else %} c-font-red-2">Скрыт на сайте{% endif %}</p>
+                    </div>
+                    <div>
+                        <a class="btn btn-sm c-theme-btn c-btn-square c-btn-uppercase c-btn-bold" href="{% url 'dashboard:room-edit' pk=room.id %}">
+                            <i class="fa fa-pencil"></i>Редактировать</a>
+                        <a class="btn btn-sm btn-default c-btn-square c-btn-uppercase c-btn-bold" href="{% url 'room' room.id %}" target="_blank">
+                            <i class="fa fa-external-link"></i>Смотреть на сайте</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    
+    <div class="modal fade" id="room-add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Добавление номера</h4>
+          </div>
+          
+          <div class="modal-body">
+            <div id="modal-room-add"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#room-add').on('show.bs.modal', function (event) {
+                $.get('{% url 'dashboard:room-add' %}', function(data) {
+                    $('#modal-room-add').html(data['html']);
+                });
+            });
+            
+            $('#room-add').on('click', '#room-save', function(e) {
+                $('#form').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        if (data['result'] == 'success') {
+                            window.location = data['success_url'];
+                        }
+                        else if (data['result'] == 'error') {
+                            $('#modal-room-add').html(data['html']);
+                        }
+                    },
+                    dataType: 'json'
+                });
+                e.preventDefault();
+            });
+        });
+    </script>
+
+{% endblock %}

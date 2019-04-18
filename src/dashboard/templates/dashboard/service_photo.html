@@ -1,0 +1,92 @@
+{% extends 'dashboard/service_base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block service_content %}
+
+    <div class="row c-margin-b-20">
+        <div class="col-md-12">
+            <form method="post" action="{% url 'dashboard:service-photo' service.id %}" enctype="multipart/form-data" id="form">
+                {% csrf_token %}
+                <span class="btn btn-success fileinput-button">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Добавить фотографии
+                    <input type="file" name="files[]" multiple="" id="files">
+                </span>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+    <ul class="photos-sortable">
+    {% for photo in service.get_photos %}
+        <li class="photo-block col-md-4 c-margin-b-20" id="photo_{{ photo.id }}">
+            <div class="c-content-product-2">
+                <div class="c-content-overlay">
+                    <div class="c-overlay-wrapper">
+                        <div class="c-overlay-content">
+                            <a href="{% url 'dashboard:service-photo-edit' pk=service.id photo_id=photo.id %}?delete" class="photo-btn btn btn-sm c-btn-red-1 c-btn-uppercase c-btn-bold c-btn-border-1x c-btn-square">Удалить</a>
+                        </div>
+                    </div>
+                    <div class="c-bg-img-center c-overlay-object">
+                        <img src="{{ photo.image|thumbnail_url:'dashboard_rooms_photo' }}" alt="" />
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#files').on('change', function(e) {
+                $('#form').ajaxSubmit({
+                    success: function(data, statusText, xhr, $form) {
+                        window.location.reload();
+                    },
+                    dataType: 'json'
+                });
+                e.preventDefault();
+            });
+
+            $('.photos-sortable').sortable({
+                update: function(e, ui) {
+                    var d = $(this).sortable("serialize");
+                    console.log(d); 
+                    $.get(
+                        '{% url 'dashboard:service-photos-sort' pk=service.id %}',
+                        d,
+                        function(data) {  }
+                    );
+                }
+            });
+
+            $(".photo-btn").on("click", function() {
+                var a = $(this);
+                console.log('Click ' + a.attr('href'));
+                $.ajax({
+                    type: "GET",
+                    url: a.attr('href'),
+                    success: function(data) {
+                        if (data['result'] == 'ok') {
+                            if (data['action'] == 'main') {
+                                $('.c-label').remove();
+                                a.parents('.c-content-overlay').prepend('<div class="c-label c-bg-red c-font-uppercase c-font-white c-font-13 c-font-bold">Главная</div>');
+                            }
+                            if (data['action'] == 'delete') {
+                                a.parents('.photo-block').remove();
+                            }
+                        }
+                    },
+                    dataType: 'json'
+                });
+                return false;
+            });
+        });
+    </script>
+
+{% endblock %}
+
+

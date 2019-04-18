@@ -1,0 +1,86 @@
+base/settings_local.py
+
+*.pyc                                                                                                                                                                           
+*~                                                                                                                                                                              
+*.swp                                                                                                                                                                           
+*.swo                                                                                                                                                                           
+.project                                                                                                                                                                        
+.pydevproject                                                                                                                                                                   
+.settings/*                                                                                                                                                                     
+public/static                                                                                                                                                                   
+                                                                                                                                                                                
+MINDS        
+.hg/
+
+*.py[co]
+*[~#]
+**/desktop.ini
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+#Translations
+*.mo
+
+#Mr Developer
+.mr.developer.cfg
+
+*.sql
+
+.ropeproject
+.production
+production.sh
+
+# vim
+*.swo
+*.swp
+
+# eclipse
+.project
+.pydevproject
+.settings
+
+# wing
+*.wpr
+
+# Komodo
+*.komodoproject
+.komodotools/
+
+sshfs
+coverage
+eml
+tmp
+env
+eml
+coverage
+meandre
+precise
+lib/pymorphy
+src/legacy
+src/local_settings.py
+src/prod_settings.py
+src/public
+src/search/whoosh_index/
+src/search/xapian_index/
+src/search/xapian_index_test/
+src/static/git.txt
+
+.hgignore

@@ -1,0 +1,55 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h3 class="c-center c-font-uppercase">Номера гостевого дома «Черное море»</h3>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+{#                <p class="c-center c-font-uppercase">Cras sit amet nibh libero, in gravida nulla</p>#}
+            </div>
+        </div>
+{#        {% for room in rooms %}#}
+{#            <div class="col-md-6 c-margin-b-30 {% cycle 'c-padding-r-30' 'c-padding-l-30' %}">#}
+{#                <h2 class="c-font-24"><a href="{% url 'room' room.id %}">{{ room.title }}</a>#}
+{#                <small>Количество человек: {{ room.persons }}</small></h2>#}
+{#                <a href="{% url 'room' room.id %}"><img src="{{ room.get_cover.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+    </div>
+
+    <div class="rooms">
+        <div class="row">
+        {% for room in rooms %}
+            <div class="col-md-12 c-margin-b-50">
+                <div class="post">
+                    <div class="post-media">
+                        <a href="{% url 'room' room.id %}"><img src="{{ room.get_cover.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="post-body">
+                        <div class="c-content-title-2">
+                            <h2 class="c-font-24 c-font-blue-2"><a  class="c-font-blue-2" href="{% url 'room' room.id %}">{{ room.title }}</a></h2>
+                            <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                        </div>
+{#                        <h2 class="c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}</a></h2>#}
+                        <h3>Количество человек: <b>{{ room.persons }}</b></h3>
+                        <h3>Основных мест: <b>{{ room.places }}</b></h3>
+                        {% if room.places_additional %}<h3>Дополнительных мест: <b>{{ room.places_additional }}</b></h3>{% endif %}
+                        {% if room.get_price_min %}<h3>Цена от: <b>{{ room.get_price_min.price_min }} руб.</b></h3>{% endif %}
+                        <p class="c-margin-t-20"><a href="{% url 'room' room.id %}" class="btn btn-default c-btn-uppercase c-btn-square c-btn-uppercase c-btn-grey-2 c-btn-border-1x">Посмотреть номер</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+
+    
+{% endblock %}

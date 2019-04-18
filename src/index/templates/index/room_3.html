@@ -1,0 +1,112 @@
+{% extends 'index/base.html' %}
+
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="c-content-title-2">
+                <h1 class="c-center c-font-uppercase" id="room-id" data-room-id="{{ room.id }}">{{ room.title }}</h1>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                {% if room.text %}
+                    <p class="c-center c-font-lowercase">{{ room.text }}</p>
+                    <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row c-margin-t-30">
+        <div class="col-md-8">
+            <img src="{{ room.get_cover.image|thumbnail_url:'rooms_title' }}" alt="" class="img-responsive" />
+        </div>
+        
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Номера: <b class="pull-right" style="padding-right: 100px;">{{ room.numbers }}</b></h3>
+                    <h3>Количество человек:<b class="pull-right" style="padding-right: 100px;">{{ room.persons }}</b></h3>
+                    <h3>Основных мест:<b class="pull-right" style="padding-right: 100px;">{{ room.places }}</b></h3>
+                    {% if room.places_additional > 0 %}
+                        <h3>Дополнительных мест:<b class="pull-right" style="padding-right: 100px;">{{ room.places_additional }}</b></h3>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-12">
+                    <h3>А также:</h3>
+                    <table class="b-room-comforts">
+                    {% for comfort in room.get_comforts %}
+                        <tr><th><i class="fa {{ comfort.fa_icon }}" aria-hidden="true"></i></th><td>{{ comfort.title }}</td></tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 c-margin-t-50">
+            <div class="c-content-title-1 c-title-md">
+                <h3 class="c-center c-font-uppercase c-font-bold">Стоимость проживания</h3>
+{#                <div class="c-line-center c-bg-red-1"></div>#}
+{#                <p class="c-center c-font-lowercase">Cras sit amet nibh libero, in gravida nulla</p>#}
+            </div>
+            <table class="table">
+                <tr>
+                {% for price in room.get_prices %}
+{#                    <th class="text-center">{{ price.date_start|date:'d.m.Y' }} - {{ price.date_end|date:'d.m.Y' }}</th>#}
+                    <th class="text-center">{{ price.title }}</th>
+                {% endfor %}
+                </tr>
+                <tr>
+                {% for price in room.get_prices %}
+                    <td class="text-center c-font-blue-2 c-font-bold">
+                        {% if price.price_min %}{{ price.price_min }}{% endif %}
+                        {% if price.price_max and price.price_min %} - {% endif %}
+                        {% if price.price_max %}{{ price.price_max }}{% endif %}
+                        руб.
+                    </td>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-md-12 well" style="margin-top: 2em;">
+            <h3 class="text-center text-danger">Бронирование номера</h3>
+            <div id="order-container"></div>
+                <div class="col-md-2 col-md-offset-5" id="order-click">
+                    <input type="submit" class="btn btn-primary btn-lg" name="order-form" value="Забронировать" />
+                </div>
+        </div>
+
+    </div>
+        
+    <div class="row c-margin-t-30">
+        {% for photo in room.get_photos %}
+            <div class="col-md-4 c-center c-margin-b-40">
+                <a href="{{ photo.image|thumbnail_url:'gallery_view' }}" data-lightbox='fancybox' rel="group">
+                    <img src="{{ photo.image|thumbnail_url:'room_photo' }}" alt="" class="img-responsive" />
+                </a> 
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row c-margin-t-30">
+        <div class="col-md-12">
+            <div class="c-content-title-2">
+                <h3 class="c-center c-font-uppercase">Дополнительные услуги</h3>
+                <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
+                <p class="c-center c-font-uppercase">Что мы можем дополнительно предложить для всех наших гостей</p>
+            </div>
+        </div>
+        {% for service in services %}
+            <div class="col-md-6 c-margin-b-30 service-label">
+                <h2 class="c-font c-font-uppercase c-font-24"><a href="{% url 'service' service.id %}">{{ service.title }}<small>{{ service.mini_text }}</small></a></h2>
+                <figure><img src="{{ service.image|thumbnail_url:'rooms_list' }}" alt="" class="img-responsive" /></figure>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

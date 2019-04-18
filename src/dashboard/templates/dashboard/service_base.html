@@ -1,0 +1,28 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% load thumbnail %}
+
+
+{% block content %}
+    <div class="row c-margin-b-20">
+        <div class="c-content-title-2">
+            <h1 class="c-left c-font-lowercase c-font-sbold">{{ service.title }}</h1>
+            <div class="c-line c-theme-bg c-theme-bg-after"></div>
+        </div>
+        <ul class="nav nav-tabs c-font-slim">
+            <li{% if active_menu == 'service_edit' %} class="active"{% endif %}>
+                <a href="{% url 'dashboard:service-edit' pk=service.id %}" class="c-font-blue-2">Описание услуги</a>
+            </li>
+            <li{% if active_menu == 'service_photo' %} class="active"{% endif %}>
+                <a href="{% url 'dashboard:service-photo' pk=service.id %}" class="c-font-blue-2">Фотографии</a>
+            </li>
+        </ul>
+    </div>
+
+    {% block service_content %}{% endblock %}
+
+    
+{% endblock %}
+
+
