@@ -68,14 +68,17 @@ class MenuMixin(object):
     def get_context_data(self, **kwargs):
         context = super(MenuMixin, self).get_context_data(**kwargs)
         context['menu'] = self.menu()
+        page, created = IndexPage.objects.get_or_create(pk=1)
+        context['page'] = page
         return context
+
 
 class IndexView(MenuMixin, TemplateView):
     template_name = 'index/index.html'
 
     def get(self, request, *args, **kwargs):
         self.sliders = Slider.objects.all()
-        self.page, created = IndexPage.objects.get_or_create(pk=1)
+        #self.page, created = IndexPage.objects.get_or_create(pk=1)
         self.rooms = Room.objects.filter(is_visible=True)
         self.services = Service.objects.all()
         super(IndexView, self).get(request, *args, **kwargs)
@@ -83,7 +86,7 @@ class IndexView(MenuMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['page'] = self.page
+        #context['page'] = self.page
         context['sliders'] = self.sliders
         context['rooms'] = self.rooms
         context['services'] = self.services
@@ -176,3 +179,17 @@ class ContactsView(MenuMixin, TemplateView):
 
 class CommentsView(MenuMixin, TemplateView):
     template_name = 'index/comments.html'
+
+
+class SearchView(MenuMixin, TemplateView):
+    template_name = 'index/search.html'
+
+    def get(self, request, *args, **kwargs):
+        self.page, created = IndexPage.objects.get_or_create(pk=1)
+        super(SearchView, self).get(request, *args, **kwargs)
+        return self.render_to_response(self.get_context_data(**kwargs))
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context['contacts'] = self.page
+        return context

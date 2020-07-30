@@ -36,19 +36,23 @@
         </ul>
     </div>
 
+    <form method="post" action="{% url 'dashboard:index-page' %}" id="text-form">
     <div class="row">
         <div class="col-md-12">
             <h1>Текст на главной странице</h1>
             <p>Это текст, который будет размещен на главной странице сайта сразу после слайдера.</p>
-            <form method="post" action="{% url 'dashboard:index-page' %}" id="text-form">
-                {% csrf_token %}
-                {{ form.media }}
-                {{ form.text }}
-                <button type="submit" id="page-form" class="btn btn-success">Сохранить текст</button>
-            </form>
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.text }}
+
+            <h1>Текст блока описания бронирования</h1>
+            <p>Это текст, который будет размещен в блоке описания бронирования</p>
+            {{ form.order_text }}
+            <button type="submit" id="page-form" class="btn btn-success">Сохранить текст</button>
         </div>
     </div>
-    
+    </form>
+
     <div class="modal fade" id="photo-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">

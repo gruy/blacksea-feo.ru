@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^rooms/(?P<pk>\d+)/$', RoomDetailView.as_view(), name='room'),
     url(r'^services/$', ServicesView.as_view(), name='services'),
     url(r'^services/(?P<pk>\d+)/$', ServiceDetailView.as_view(), name='service'),
+    url(r'^search/$', SearchView.as_view(), name='search'),
 ]

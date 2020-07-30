@@ -43,10 +43,17 @@
     <div class="row">
         <div class="col-md-12 c-margin-t-40">
             <div class="c-content-title-2">
-                <h1 class="c-center c-font-uppercase">Гостевой дом «Черное море»</h1>
+                <h1 class="c-center c-font-uppercase">Гостевой дом «Черное море» - официальный сайт</h1>
                 <div class="c-line c-dot c-theme-bg c-theme-bg-after"></div>
 {#                <p class="c-center">Фотографии номеров и территории гостевого дома «Черное море»</p>#}
             </div>
+
+            <div class="alert alert-info" role="alert">
+                {{ page.order_text|safe }}
+            </div>
+
+            <div id="mbh-form-wrapper"><a href="https://maxi-booking.ru/">система онлайн бронирования</a></div>
+
             {{ page.text|safe }}
         </div>
     </div>
@@ -87,4 +94,10 @@
         </div>
     </div>
 
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://blacksea2014.maxi-booking.ru/management/online/api/file/5dee104e839d17765f0810bf/load-search-form"></script>
 {% endblock %}

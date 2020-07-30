@@ -73,16 +73,19 @@
             </table>
         </div>
 
-        <div class="col-md-12 well" style="margin-top: 2em;">
-            <h3 class="text-center text-danger">Бронирование номера</h3>
-            <div id="order-container"></div>
-                <div class="col-md-2 col-md-offset-5" id="order-click">
-                    <input type="submit" class="btn btn-primary btn-lg" name="order-form" value="Забронировать" />
-                </div>
-        </div>
-
     </div>
-        
+
+
+    <div class="row">
+        <div class="col-md-12 c-margin-t-10">
+            <div class="alert alert-info" role="alert">
+                {{ page.order_text|safe }}
+            </div>
+            <div id="mbh-form-wrapper"><a href="https://maxi-booking.ru/">система онлайн бронирования</a></div>
+        </div>
+    </div>
+
+
     <div class="row c-margin-t-30">
         {% for photo in room.get_photos %}
             <div class="col-md-4 c-center c-margin-b-40">
@@ -109,4 +112,10 @@
         {% endfor %}
     </div>
     
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://blacksea2014.maxi-booking.ru/management/online/api/file/5dee104e839d17765f0810bf/load-search-form"></script>
 {% endblock %}

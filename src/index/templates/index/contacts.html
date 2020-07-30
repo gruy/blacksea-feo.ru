@@ -46,4 +46,20 @@
 
     </div>
 
+
+    <div class="row">
+        <div class="col-md-12 c-margin-t-10">
+            <div class="alert alert-info" role="alert">
+                {{ page.order_text|safe }}
+            </div>
+            <div id="mbh-form-wrapper"><a href="https://maxi-booking.ru/">система онлайн бронирования</a></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://blacksea2014.maxi-booking.ru/management/online/api/file/5dee104e839d17765f0810bf/load-search-form"></script>
 {% endblock %}

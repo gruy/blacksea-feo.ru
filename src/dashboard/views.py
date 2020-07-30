@@ -127,7 +127,7 @@ class IndexPageView(LoginRequiredMixin, FormView):
 
     def get_initial(self):
         page, created = IndexPage.objects.get_or_create(pk=1)
-        return {'text': page.text, }
+        return {'text': page.text, 'order_text': page.order_text, }
 
     def post(self, request, *args, **kwargs):
         files = request.FILES.getlist('files[]')
@@ -144,6 +144,7 @@ class IndexPageView(LoginRequiredMixin, FormView):
         else:
             page, created = IndexPage.objects.get_or_create(pk=1)
             page.text = request.POST.get('text')
+            page.order_text = request.POST.get('order_text')
             page.save()
             return HttpResponseRedirect(reverse('dashboard:index-page'))
 

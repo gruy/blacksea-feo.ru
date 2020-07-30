@@ -10,6 +10,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 @python_2_unicode_compatible  # only if you need to support Python 2
 class IndexPage(models.Model):
     text = RichTextUploadingField(u'Текст главной страницы', max_length=20000)
+    order_text = RichTextUploadingField(u'Текст блока бронирования', max_length=2000)
     contacts_text = RichTextUploadingField(u'Дополнительная информация о контактах, бронировании, трансфере', max_length=20000)
     phone_1 = models.CharField(u'Телефон 1', max_length=255, blank=True, null=True)
     phone_2 = models.CharField(u'Телефон 2', max_length=255, blank=True, null=True)

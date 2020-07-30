@@ -7,7 +7,7 @@ from src.dashboard.models import IndexPage
 
 class IndexPageForm(ModelForm):
     class Meta:
-        fields = ['text', ]
+        fields = ['text', 'order_text', ]
         model = IndexPage
 
 
