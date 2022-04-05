@@ -84,3 +84,5 @@ src/search/xapian_index_test/
 src/static/git.txt
 
 .hgignore
+
+.idea/
